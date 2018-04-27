@@ -1,0 +1,182 @@
+== README
+
+Steps
+1. Create a new project, using rails new user_login_project
+
+2. Create a new model called 'User' with the information above.
+
+3. Rails will automatically create the automatic increment of the primary field called ID as well as created_at and updated_at time stamps.
+
+4. Create a few records in the users table using the Rails console.
+    2.3.1 :004 > User.create(first_name: "Free", last_name: "Willy", email_address:"whale@whale.com", age:31)
+    (0.1ms)  begin transaction
+    SQL (5.4ms)  INSERT INTO "users" ("first_name", "last_name", "email_address", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["first_name", "Free"], ["last_name", "Willy"], ["email_address", "whale@whale.com"], ["age", 31], ["created_at", "2018-04-26 19:39:43.856131"], ["updated_at", "2018-04-26 19:39:43.856131"]]
+    (3.1ms)  commit transaction
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | 1  | Free       | Willy     | whale@wha... | 31  | 2018-04-2... | 2018-04-26... |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    1 row in set
+    2.3.1 :005 > User.create(first_name: "Charile", last_name: "Unicorn", email_address:"unicorn@unicorn.com", age:18)
+    (0.1ms)  begin transaction
+    SQL (5.7ms)  INSERT INTO "users" ("first_name", "last_name", "email_address", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["first_name", "Charile"], ["last_name", "Unicorn"], ["email_address", "unicorn@unicorn.com"], ["age", 18], ["created_at", "2018-04-26 19:40:30.711751"], ["updated_at", "2018-04-26 19:40:30.711751"]]
+    (3.6ms)  commit transaction
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | 2  | Charile    | Unicorn   | unicorn@u... | 18  | 2018-04-2... | 2018-04-26... |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    1 row in set
+    2.3.1 :006 > User.create(first_name: "Mickey", last_name: "Mouse", email_address:"mouse@mouse.com", age:105)
+    (0.1ms)  begin transaction
+    SQL (4.8ms)  INSERT INTO "users" ("first_name", "last_name", "email_address", "age", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)  [["first_name", "Mickey"], ["last_name", "Mouse"], ["email_address", "mouse@mouse.com"], ["age", 105], ["created_at", "2018-04-26 19:44:21.751874"], ["updated_at", "2018-04-26 19:44:21.751874"]]
+    (4.5ms)  commit transaction
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    | 3  | Mickey     | Mouse     | mouse@mou... | 105 | 2018-04-2... | 2018-04-26... |
+    +----+------------+-----------+--------------+-----+--------------+---------------+
+    1 row in set
+
+5. Now add validations to the model so that...
+    it requires the presence of the all four fields.
+    it requires the age to be numeric.
+    it requires the first_name and the last_name to be at least 2 characters each.
+    it requires the age to be at least 10 and below 150 (look into http://apidock.com/rails/ActiveModel/Validations/HelperMethods/validates_numericality_of for some help).
+    Get familiar with .save, .valid?
+    use .errors and .errors.full_messages so that you can see/display the error messages when the validations are failing
+
+6. Using the Rails console...
+    See if it allows you to insert some records when the fields are not meeting the validation rules we set (e.g. try to create a record where age is 5 or above 150, or where the first name is just one character, etc).
+        2.3.1 :013 >   user = User.create(first_name: "M", last_name: "M", email_address:"mouse@mouse.com", age:151)
+        (0.5ms)  begin transaction
+        (0.1ms)  rollback transaction
+        +----+------------+-----------+-----------------+-----+------------+------------+
+        | id | first_name | last_name | email_address   | age | created_at | updated_at |
+        +----+------------+-----------+-----------------+-----+------------+------------+
+        |    | M          | M         | mouse@mouse.com | 151 |            |            |
+        +----+------------+-----------+-----------------+-----+------------+------------+
+        1 row in set
+        2.3.1 :014 > user.errors
+        => #<ActiveModel::Errors:0x0000000384b720 @base=#<User id: nil, first_name: "M", last_name: "M", email_address: "mouse@mouse.com", age: 151, created_at: nil, updated_at: nil>, @messages={:first_name=>["is too short (minimum is 2 characters)"], :last_name=>["is too short (minimum is 2 characters)"]}> 
+        2.3.1 :015 > user.errors.full_messages
+        => ["First name is too short (minimum is 2 characters)", "Last name is too short (minimum is 2 characters)"] 
+            Make sure your console returns appropriate error messages when you try to save something that's not meeting the validation rules.
+        
+        2.3.1 :017 > user = User.create(first_name: "Mickey", last_name: "Mouse", email_address:"", age:151)
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+        +----+------------+-----------+---------------+-----+------------+------------+
+        | id | first_name | last_name | email_address | age | created_at | updated_at |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        |    | Mickey     | Mouse     |               | 151 |            |            |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        1 row in set
+        2.3.1 :018 > user.errors.full_messages
+        => ["Email address can't be blank"] 
+
+        2.3.1 :035 > user = User.create(first_name: "Mickey", last_name: "Mouse", email_address:"lsikdjf", age:180)
+        (0.1ms)  begin transaction
+        (0.1ms)  rollback transaction
+        +----+------------+-----------+---------------+-----+------------+------------+
+        | id | first_name | last_name | email_address | age | created_at | updated_at |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        |    | Mickey     | Mouse     | lsikdjf       | 180 |            |            |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        1 row in set
+        2.3.1 :036 > user.errors.full_messages
+        => ["Age must be less than 150"] 
+        2.3.1 :037 > user = User.create(first_name: "Mickey", last_name: "Mouse", email_address:"lsikdjf", age:3)
+        (0.3ms)  begin transaction
+        (0.1ms)  rollback transaction
+        +----+------------+-----------+---------------+-----+------------+------------+
+        | id | first_name | last_name | email_address | age | created_at | updated_at |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        |    | Mickey     | Mouse     | lsikdjf       | 3   |            |            |
+        +----+------------+-----------+---------------+-----+------------+------------+
+        1 row in set
+        2.3.1 :038 > user.errors.full_messages
+        => ["Age must be greater than 5"] 
+
+    Know how to retrieve all users.
+        2.3.1 :039 > users = User.all
+        User Load (2.5ms)  SELECT "users".* FROM "users"
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 1  | Free       | Willy     | whale@wha... | 31  | 2018-04-2... | 2018-04-26... |
+        | 2  | Charile    | Unicorn   | unicorn@u... | 18  | 2018-04-2... | 2018-04-26... |
+        | 3  | Mickey     | Mouse     | mouse@mou... | 105 | 2018-04-2... | 2018-04-26... |
+        | 4  | Mickey     | Mouse     | mouse@mou... | 150 | 2018-04-2... | 2018-04-26... |
+        | 5  | Mickey     | Mouse     | mouse@mou... | 151 | 2018-04-2... | 2018-04-26... |
+        | 6  | Mickey     | Mouse     | mouse@mou... | 151 | 2018-04-2... | 2018-04-26... |
+        | 7  | Mickey     | Mouse     | lsikdjf      | 180 | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        7 rows in set
+
+    Know how to get the first user.
+        2.3.1 :040 > users = User.first
+        User Load (2.1ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 1  | Free       | Willy     | whale@wha... | 31  | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        1 row in set
+
+    Know how to get the last user.
+        2.3.1 :041 > users = User.last
+        User Load (2.0ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" DESC LIMIT 1
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 7  | Mickey     | Mouse     | lsikdjf      | 180 | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        1 row in set
+
+    Know how to get the users sorted by their first name (order by first_name DESC). See ordering rules and more here: http://guides.rubyonrails.org/active_record_querying.html#ordering
+        2.3.1 :044 > user = User.order("first_name DESC")
+        User Load (2.4ms)  SELECT "users".* FROM "users"  ORDER BY first_name DESC
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 3  | Mickey     | Mouse     | mouse@mou... | 105 | 2018-04-2... | 2018-04-26... |
+        | 4  | Mickey     | Mouse     | mouse@mou... | 150 | 2018-04-2... | 2018-04-26... |
+        | 5  | Mickey     | Mouse     | mouse@mou... | 151 | 2018-04-2... | 2018-04-26... |
+        | 6  | Mickey     | Mouse     | mouse@mou... | 151 | 2018-04-2... | 2018-04-26... |
+        | 7  | Mickey     | Mouse     | lsikdjf      | 180 | 2018-04-2... | 2018-04-26... |
+        | 1  | Free       | Willy     | whale@wha... | 31  | 2018-04-2... | 2018-04-26... |
+        | 2  | Charile    | Unicorn   | unicorn@u... | 18  | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        7 rows in set
+    
+    Get the record of the user whose id is 3 and UPDATE the person's last_name to something else. Know how to do this directly in the console using .find and .save.
+        2.3.1 :045 > user = User.find(3)
+        User Load (1.5ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 3]]
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 3  | Mickey     | Mouse     | mouse@mou... | 105 | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        1 row in set
+        2.3.1 :046 > user.last_name = "Dog"
+        => "Dog" 
+        2.3.1 :047 > user.save
+        (0.2ms)  begin transaction
+        SQL (6.7ms)  UPDATE "users" SET "last_name" = ?, "updated_at" = ? WHERE "users"."id" = ?  [["last_name", "Dog"], ["updated_at", "2018-04-26 20:47:43.824113"], ["id", 3]]
+        (4.0ms)  commit transaction
+        => true 
+
+    Know how to delete a record of a user whose id is 4 (use something like User.find(2).destroy...).
+        2.3.1 :048 > User.find(4).destroy
+        User Load (2.3ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 4]]
+        (0.1ms)  begin transaction
+        SQL (4.2ms)  DELETE FROM "users" WHERE "users"."id" = ?  [["id", 4]]
+        (4.7ms)  commit transaction
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | id | first_name | last_name | email_add... | age | created_at   | updated_at    |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        | 4  | Mickey     | Mouse     | mouse@mou... | 150 | 2018-04-2... | 2018-04-26... |
+        +----+------------+-----------+--------------+-----+--------------+---------------+
+        1 row in set

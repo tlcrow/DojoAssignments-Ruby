@@ -1,0 +1,281 @@
+== README
+
+1. Start a new project (the name of the project should be 'dojo_ninjas')
+
+2. Create appropriate tables/models.
+
+3. Using Ruby console:
+    Create 3 dojos (insert some blank entries just to make sure it's allowing you to insert empty entries)
+        2.3.1 :002 > Dojo.new
+        +----+------+------+-------+------------+------------+
+        | id | name | city | state | created_at | updated_at |
+        +----+------+------+-------+------------+------------+
+        |    |      |      |       |            |            |
+        +----+------+------+-------+------------+------------+
+        1 row in set
+        2.3.1 :003 > Dojo.create(name: "CodingDojo Silicon Valley", city: "Mountain View", state: "CA")
+        (0.1ms)  begin transaction
+        SQL (6.2ms)  INSERT INTO "dojos" ("name", "city", "state", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "CodingDojo Silicon Valley"], ["city", "Mountain View"], ["state", "CA"], ["created_at", "2018-04-26 21:34:20.578528"], ["updated_at", "2018-04-26 21:34:20.578528"]]
+        (4.3ms)  commit transaction
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        | id | name              | city          | state | created_at        | updated_at         |
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        | 1  | CodingDojo Sil... | Mountain View | CA    | 2018-04-26 21:... | 2018-04-26 21:3... |
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        1 row in set
+        2.3.1 :004 > Dojo.create(name: "CodingDojo Seattle", city: "Seattle", state: "WA")
+        (0.1ms)  begin transaction
+        SQL (6.7ms)  INSERT INTO "dojos" ("name", "city", "state", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "CodingDojo Seattle"], ["city", "Seattle"], ["state", "WA"], ["created_at", "2018-04-26 21:34:47.531913"], ["updated_at", "2018-04-26 21:34:47.531913"]]
+        (4.5ms)  commit transaction
+        +----+--------------------+---------+-------+----------------------+----------------------+
+        | id | name               | city    | state | created_at           | updated_at           |
+        +----+--------------------+---------+-------+----------------------+----------------------+
+        | 2  | CodingDojo Seattle | Seattle | WA    | 2018-04-26 21:34:... | 2018-04-26 21:34:... |
+        +----+--------------------+---------+-------+----------------------+----------------------+
+        1 row in set
+
+4. Change your models so that it does the following validations:
+    For the dojo, require the presence of the name, city, and state; also require the state to be two characters long
+    For the ninja, require the presence of the first name and last name
+
+5. Make sure that your ninja model belongs to the dojo (specify this in the model for both the dojo and the ninja)
+
+6.Using ruby console
+    Delete the three dojos you created (e.g. Dojo.find(1).destroy; also look up destroy_all method)
+        2.3.1 :005 > Dojo.destroy_all
+        Dojo Load (2.3ms)  SELECT "dojos".* FROM "dojos"
+        (0.1ms)  begin transaction
+        SQL (6.1ms)  DELETE FROM "dojos" WHERE "dojos"."id" = ?  [["id", 1]]
+        (5.1ms)  commit transaction
+        (0.1ms)  begin transaction
+        SQL (5.6ms)  DELETE FROM "dojos" WHERE "dojos"."id" = ?  [["id", 2]]
+        (3.7ms)  commit transaction
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        | id | name              | city          | state | created_at        | updated_at         |
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        | 1  | CodingDojo Sil... | Mountain View | CA    | 2018-04-26 21:... | 2018-04-26 21:3... |
+        | 2  | CodingDojo Sea... | Seattle       | WA    | 2018-04-26 21:... | 2018-04-26 21:3... |
+        +----+-------------------+---------------+-------+-------------------+--------------------+
+        2 rows in set
+
+7. Create 3 additional dojos by using Dojo.new.
+    2.3.1 :007 > dojo = Dojo.new(name: "CodingDojo Seattle", city: "Seattle", state: "WA")
+    +----+--------------------+---------+-------+------------+------------+
+    | id | name               | city    | state | created_at | updated_at |
+    +----+--------------------+---------+-------+------------+------------+
+    |    | CodingDojo Seattle | Seattle | WA    |            |            |
+    +----+--------------------+---------+-------+------------+------------+
+    1 row in set
+    2.3.1 :008 > dojo.save
+    (0.1ms)  begin transaction
+    SQL (4.2ms)  INSERT INTO "dojos" ("name", "city", "state", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "CodingDojo Seattle"], ["city", "Seattle"], ["state", "WA"], ["created_at", "2018-04-26 21:46:52.355167"], ["updated_at", "2018-04-26 21:46:52.355167"]]
+    (4.4ms)  commit transaction
+    => true 
+    2.3.1 :009 > dojo = Dojo.new(name: "CodingDojo Silicon Valley", city: "Mountain View", state: "WA")
+    +----+---------------------------+---------------+-------+------------+------------+
+    | id | name                      | city          | state | created_at | updated_at |
+    +----+---------------------------+---------------+-------+------------+------------+
+    |    | CodingDojo Silicon Valley | Mountain View | WA    |            |            |
+    +----+---------------------------+---------------+-------+------------+------------+
+    1 row in set
+    2.3.1 :010 > dojo.save
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "dojos" ("name", "city", "state", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "CodingDojo Silicon Valley"], ["city", "Mountain View"], ["state", "WA"], ["created_at", "2018-04-26 21:47:21.882081"], ["updated_at", "2018-04-26 21:47:21.882081"]]
+    (4.8ms)  commit transaction
+    => true 
+    2.3.1 :011 > dojo = Dojo.new(name: "CodingDojo New York", city: "New York", state: "NY")
+    +----+---------------------+----------+-------+------------+------------+
+    | id | name                | city     | state | created_at | updated_at |
+    +----+---------------------+----------+-------+------------+------------+
+    |    | CodingDojo New York | New York | NY    |            |            |
+    +----+---------------------+----------+-------+------------+------------+
+    1 row in set
+    2.3.1 :012 > dojo.save
+    (0.1ms)  begin transaction
+    SQL (4.9ms)  INSERT INTO "dojos" ("name", "city", "state", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "CodingDojo New York"], ["city", "New York"], ["state", "NY"], ["created_at", "2018-04-26 21:48:00.700764"], ["updated_at", "2018-04-26 21:48:00.700764"]]
+    (4.0ms)  commit transaction
+    => true 
+    2.3.1 :013 > Dojo.second.update(state: "CA")
+    Dojo Load (2.0ms)  SELECT  "dojos".* FROM "dojos"  ORDER BY "dojos"."id" ASC LIMIT 1 OFFSET 1
+    (0.1ms)  begin transaction
+    SQL (2.6ms)  UPDATE "dojos" SET "state" = ?, "updated_at" = ? WHERE "dojos"."id" = ?  [["state", "CA"], ["updated_at", "2018-04-26 21:48:22.126225"], ["id", 4]]
+    (2.8ms)  commit transaction
+    => true 
+    2.3.1 :014 > Dojo.all
+    Dojo Load (1.9ms)  SELECT "dojos".* FROM "dojos"
+    +----+-------------------+---------------+-------+-------------------+--------------------+
+    | id | name              | city          | state | created_at        | updated_at         |
+    +----+-------------------+---------------+-------+-------------------+--------------------+
+    | 3  | CodingDojo Sea... | Seattle       | WA    | 2018-04-26 21:... | 2018-04-26 21:4... |
+    | 4  | CodingDojo Sil... | Mountain View | CA    | 2018-04-26 21:... | 2018-04-26 21:4... |
+    | 5  | CodingDojo New... | New York      | NY    | 2018-04-26 21:... | 2018-04-26 21:4... |
+    +----+-------------------+---------------+-------+-------------------+--------------------+
+    3 rows in set
+8. Try to create a few more dojos but without specifying some of the required 
+fields. Make sure that the validation works and generates the errors.
+    2.3.1 :019 > dojo = Dojo.create(state: "NY")
+    (0.1ms)  begin transaction
+    (0.1ms)  rollback transaction
+    +----+------+------+-------+------------+------------+
+    | id | name | city | state | created_at | updated_at |
+    +----+------+------+-------+------------+------------+
+    |    |      |      | NY    |            |            |
+    +----+------+------+-------+------------+------------+
+    1 row in set
+    2.3.1 :020 > dojo.errors.full_messages
+    => ["Name can't be blank", "City can't be blank"] 
+    2.3.1 :021 > dojo = Dojo.create()
+    (0.1ms)  begin transaction
+    (0.4ms)  rollback transaction
+    +----+------+------+-------+------------+------------+
+    | id | name | city | state | created_at | updated_at |
+    +----+------+------+-------+------------+------------+
+    |    |      |      |       |            |            |
+    +----+------+------+-------+------------+------------+
+    1 row in set
+    2.3.1 :022 > dojo.errors.full_messages
+    => ["Name can't be blank", "City can't be blank", "State can't be blank", "State is the wrong length (should be 2 characters)"] 
+    2.3.1 :023 > ninja = Ninja.create()
+    (0.1ms)  begin transaction
+    (0.1ms)  rollback transaction
+    +----+---------+------------+------------+------------+-----------+
+    | id | dojo_id | created_at | updated_at | first_name | last_name |
+    +----+---------+------------+------------+------------+-----------+
+    |    |         |            |            |            |           |
+    +----+---------+------------+------------+------------+-----------+
+    1 row in set
+    2.3.1 :024 > ninja.errors.full_messages
+    => ["First name can't be blank", "Last name can't be blank"] 
+
+9. Create 3 ninjas that belong to the first dojo you created.
+    2.3.1 :025 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Silicon Valley"), first_name: "Free", last_name: "Willy")
+    Dojo Load (1.7ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Silicon Valley"]]
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 4], ["first_name", "Free"], ["last_name", "Willy"], ["created_at", "2018-04-26 21:59:03.072462"], ["updated_at", "2018-04-26 21:59:03.072462"]]
+    (4.0ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 1  | 4       | 2018-04-26 21:59:03... | 2018-04-26 21:59:03... | Free       | Willy     |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+    2.3.1 :026 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Silicon Valley"), first_name: "Mickey", last_name: "Mouse")
+    Dojo Load (2.3ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Silicon Valley"]]
+    (0.1ms)  begin transaction
+    SQL (5.4ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 4], ["first_name", "Mickey"], ["last_name", "Mouse"], ["created_at", "2018-04-26 21:59:39.853998"], ["updated_at", "2018-04-26 21:59:39.853998"]]
+    (4.3ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 2  | 4       | 2018-04-26 21:59:39... | 2018-04-26 21:59:39... | Mickey     | Mouse     |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+    2.3.1 :027 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Silicon Valley"), first_name: "Charlie", last_name: "Unicorn")
+    Dojo Load (2.1ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Silicon Valley"]]
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 4], ["first_name", "Charlie"], ["last_name", "Unicorn"], ["created_at", "2018-04-26 22:00:05.468732"], ["updated_at", "2018-04-26 22:00:05.468732"]]
+    (3.2ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 3  | 4       | 2018-04-26 22:00:05... | 2018-04-26 22:00:05... | Charlie    | Unicorn   |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+
+10. Create 3 more ninjas and have them belong to the second dojo you created.
+    2.3.1 :028 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Seattle"), first_name: "Daffy", last_name: "Duck")
+    Dojo Load (2.1ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Seattle"]]
+    (0.1ms)  begin transaction
+    SQL (5.5ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 3], ["first_name", "Daffy"], ["last_name", "Duck"], ["created_at", "2018-04-26 22:00:49.167828"], ["updated_at", "2018-04-26 22:00:49.167828"]]
+    (5.7ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 4  | 3       | 2018-04-26 22:00:49... | 2018-04-26 22:00:49... | Daffy      | Duck      |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+    2.3.1 :029 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Seattle"), first_name: "Raphael", last_name: "Turtle")
+    Dojo Load (2.1ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Seattle"]]
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 3], ["first_name", "Raphael"], ["last_name", "Turtle"], ["created_at", "2018-04-26 22:02:45.402418"], ["updated_at", "2018-04-26 22:02:45.402418"]]
+    (5.8ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 5  | 3       | 2018-04-26 22:02:45... | 2018-04-26 22:02:45... | Raphael    | Turtle    |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+    2.3.1 :030 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo Seattle"), first_name: "Simba", last_name: "Lion")
+    Dojo Load (2.1ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo Seattle"]]
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 3], ["first_name", "Simba"], ["last_name", "Lion"], ["created_at", "2018-04-26 22:03:01.132482"], ["updated_at", "2018-04-26 22:03:01.132482"]]
+    (4.1ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 6  | 3       | 2018-04-26 22:03:01... | 2018-04-26 22:03:01... | Simba      | Lion      |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+
+11. Create 3 more ninjas and have them belong to the third dojo you created.
+    2.3.1 :031 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo New York"), first_name: "Tom O'Malley", last_name: "Cat")
+    Dojo Load (2.6ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo New York"]]
+    (0.1ms)  begin transaction
+    SQL (5.4ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 5], ["first_name", "Tom O'Malley"], ["last_name", "Cat"], ["created_at", "2018-04-26 22:04:29.823874"], ["updated_at", "2018-04-26 22:04:29.823874"]]
+    (4.0ms)  commit transaction
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    | id | dojo_id | created_at            | updated_at            | first_name   | last_name |
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    | 7  | 5       | 2018-04-26 22:04:2... | 2018-04-26 22:04:2... | Tom O'Malley | Cat       |
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    1 row in set
+    2.3.1 :032 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo New York"), first_name: "Pongo", last_name: "Dog")
+    Dojo Load (2.3ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo New York"]]
+    (0.4ms)  begin transaction
+    SQL (5.5ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 5], ["first_name", "Pongo"], ["last_name", "Dog"], ["created_at", "2018-04-26 22:05:09.587918"], ["updated_at", "2018-04-26 22:05:09.587918"]]
+    (10.8ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 8  | 5       | 2018-04-26 22:05:09... | 2018-04-26 22:05:09... | Pongo      | Dog       |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+    2.3.1 :033 > ninja = Ninja.create(dojo:Dojo.find_by(name: "CodingDojo New York"), first_name: "Pluto", last_name: "Dog")
+    Dojo Load (2.4ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo New York"]]
+    (0.1ms)  begin transaction
+    SQL (5.8ms)  INSERT INTO "ninjas" ("dojo_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["dojo_id", 5], ["first_name", "Pluto"], ["last_name", "Dog"], ["created_at", "2018-04-26 22:05:46.021772"], ["updated_at", "2018-04-26 22:05:46.021772"]]
+    (4.0ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | id | dojo_id | created_at             | updated_at             | first_name | last_name |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    | 9  | 5       | 2018-04-26 22:05:46... | 2018-04-26 22:05:46... | Pluto      | Dog       |
+    +----+---------+------------------------+------------------------+------------+-----------+
+    1 row in set
+
+12. Make sure you understand how to get all of the ninjas for any dojo (e.g. get all the ninjas for the first dojo, second dojo, etc).
+    2.3.1 :034 > Ninja.where(dojo:Dojo.find_by(name: "CodingDojo New York"))
+    Dojo Load (1.9ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo New York"]]
+    Ninja Load (2.2ms)  SELECT "ninjas".* FROM "ninjas" WHERE "ninjas"."dojo_id" = 5
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    | id | dojo_id | created_at            | updated_at            | first_name   | last_name |
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    | 7  | 5       | 2018-04-26 22:04:2... | 2018-04-26 22:04:2... | Tom O'Malley | Cat       |
+    | 8  | 5       | 2018-04-26 22:05:0... | 2018-04-26 22:05:0... | Pongo        | Dog       |
+    | 9  | 5       | 2018-04-26 22:05:4... | 2018-04-26 22:05:4... | Pluto        | Dog       |
+    +----+---------+-----------------------+-----------------------+--------------+-----------+
+    3 rows in set
+
+13. How would you only retrieve the first_name of the ninjas that belong to the second dojo and order the result by created_at DESC order?
+    2.3.1 :038 > Ninja.where(dojo:Dojo.find_by(name: "CodingDojo New York")).select(:first_name)
+    Dojo Load (1.8ms)  SELECT  "dojos".* FROM "dojos" WHERE "dojos"."name" = ? LIMIT 1  [["name", "CodingDojo New York"]]
+    Ninja Load (1.8ms)  SELECT "ninjas"."first_name" FROM "ninjas" WHERE "ninjas"."dojo_id" = 5
+    +----+--------------+
+    | id | first_name   |
+    +----+--------------+
+    |    | Tom O'Malley |
+    |    | Pongo        |
+    |    | Pluto        |
+    +----+--------------+
+    3 rows in set
+
+14. Delete the second dojo. How could you adjust your model so that it automatically removes all of the ninjas associated with that dojo?

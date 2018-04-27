@@ -1,0 +1,94 @@
+== README
+
+1. Create 5 new blogs.
+    2.3.1 :003 > blog = Blog.create(name: "animals", description: "This blogs talks about hugging cats")
+    (0.1ms)  begin transaction
+    SQL (7.8ms)  INSERT INTO "blogs" ("name", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "animals"], ["description", "This blogs talks about hugging cats"], ["created_at", "2018-04-27 02:35:54.390615"], ["updated_at", "2018-04-27 02:35:54.390615"]]
+    (3.1ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------------------+
+    | id | name    | description            | created_at             | updated_at             |
+    +----+---------+------------------------+------------------------+------------------------+
+    | 1  | animals | This blogs talks ab... | 2018-04-27 02:35:54... | 2018-04-27 02:35:54... |
+    +----+---------+------------------------+------------------------+------------------------+
+    1 row in set
+    2.3.1 :004 > blog = Blog.create(name: "sandwiches", description: "This blogs talks our favorite sandwiches")
+    (0.1ms)  begin transaction
+    SQL (5.2ms)  INSERT INTO "blogs" ("name", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "sandwiches"], ["description", "This blogs talks our favorite sandwiches"], ["created_at", "2018-04-27 02:36:28.516446"], ["updated_at", "2018-04-27 02:36:28.516446"]]
+    (3.9ms)  commit transaction
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    | id | name       | description           | created_at            | updated_at            |
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    | 2  | sandwiches | This blogs talks o... | 2018-04-27 02:36:2... | 2018-04-27 02:36:2... |
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    1 row in set
+    2.3.1 :005 > blog = Blog.create(name: "clothes", description: "This blogs talks our favorite trends")
+    (0.1ms)  begin transaction
+    SQL (5.1ms)  INSERT INTO "blogs" ("name", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "clothes"], ["description", "This blogs talks our favorite trends"], ["created_at", "2018-04-27 02:37:05.195883"], ["updated_at", "2018-04-27 02:37:05.195883"]]
+    (3.9ms)  commit transaction
+    +----+---------+------------------------+------------------------+------------------------+
+    | id | name    | description            | created_at             | updated_at             |
+    +----+---------+------------------------+------------------------+------------------------+
+    | 3  | clothes | This blogs talks ou... | 2018-04-27 02:37:05... | 2018-04-27 02:37:05... |
+    +----+---------+------------------------+------------------------+------------------------+
+    1 row in set
+    2.3.1 :006 > blog = Blog.create(name: "travel", description: "This blogs talks about the places we want to go")
+    (0.5ms)  begin transaction
+    SQL (5.9ms)  INSERT INTO "blogs" ("name", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "travel"], ["description", "This blogs talks about the places we want to go"], ["created_at", "2018-04-27 02:37:45.043863"], ["updated_at", "2018-04-27 02:37:45.043863"]]
+    (3.4ms)  commit transaction
+    +----+--------+------------------------+------------------------+-------------------------+
+    | id | name   | description            | created_at             | updated_at              |
+    +----+--------+------------------------+------------------------+-------------------------+
+    | 4  | travel | This blogs talks ab... | 2018-04-27 02:37:45... | 2018-04-27 02:37:45 UTC |
+    +----+--------+------------------------+------------------------+-------------------------+
+    1 row in set
+    2.3.1 :007 > blog = Blog.create(name: "books", description: "This blogs talks about our favorite books")
+    (0.1ms)  begin transaction
+    SQL (5.1ms)  INSERT INTO "blogs" ("name", "description", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "books"], ["description", "This blogs talks about our favorite books"], ["created_at", "2018-04-27 02:38:28.859835"], ["updated_at", "2018-04-27 02:38:28.859835"]]
+    (4.2ms)  commit transaction
+    +----+-------+-------------------------+------------------------+-------------------------+
+    | id | name  | description             | created_at             | updated_at              |
+    +----+-------+-------------------------+------------------------+-------------------------+
+    | 5  | books | This blogs talks abo... | 2018-04-27 02:38:28... | 2018-04-27 02:38:28 UTC |
+    +----+-------+-------------------------+------------------------+-------------------------+
+    1 row in set
+
+2. Create several posts for each blog.
+    posts = Post.create(blog:Blog.find_by(name:"animals"), title: "I like dogs", content: "Black dogs, white dogs, orange dogs")
+    posts = Post.create(blog:Blog.find_by(name:"sandwiches"), title: "Turkey sandwiches", content: "Turkey sandwiches with mustard")
+    posts = Post.create(blog:Blog.find_by(name:"clothes"), title: "Cheap shirts", content: "GAP, Walmart, Old Navy")
+    posts = Post.create(blog:Blog.find_by(name:"travel"), title: "Traveling to Europe", content: "Experiences in Italy")
+    posts = Post.create(blog:Blog.find_by(name:"books"), title: "Classics", content: "How many have you read")
+
+3. Create several messages for the first post.
+    messages = Message.create(post:Post.find(1), author: "Silvester Cat", message: "I am a cat. I want that yellow bird")
+    messages = Message.create(post:Post.find(1), author: "Bo Bo Blue", message: "I am embrassed because Tiffany said I am cute")
+
+4.Know how to retrieve all posts for the first blog.
+    Blog.first.posts
+5. Know how to retrieve all posts for the last blog (sorted by title in the DESC order).
+    Blog.last.posts.order('title DESC')
+
+6. Know how to update the first post's title.
+    Post.find(1).update(title: "birds")
+
+
+7. Know how to delete the third post (have the model automatically delete all messages associated with the third post when you delete the third post).
+    Post.find(3).destroy
+
+8. Know how to retrieve all blogs.
+    Blog.all
+    Blog Load (2.6ms)  SELECT "blogs".* FROM "blogs"
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    | id | name       | description           | created_at            | updated_at            |
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    | 1  | animals    | This blogs talks a... | 2018-04-27 02:35:5... | 2018-04-27 02:35:5... |
+    | 2  | sandwiches | This blogs talks o... | 2018-04-27 02:36:2... | 2018-04-27 02:36:2... |
+    | 3  | clothes    | This blogs talks o... | 2018-04-27 02:37:0... | 2018-04-27 02:37:0... |
+    | 4  | travel     | This blogs talks a... | 2018-04-27 02:37:4... | 2018-04-27 02:37:4... |
+    | 5  | books      | This blogs talks a... | 2018-04-27 02:38:2... | 2018-04-27 02:38:2... |
+    +----+------------+-----------------------+-----------------------+-----------------------+
+    5 rows in set
+
+
+9. Know how to retrieve all blogs whose id is less than 5.
+    Blog.where("id < ?", 5)
